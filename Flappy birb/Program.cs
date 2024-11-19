@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Flappy_Birb.Data;
 using Flappy_Birb.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FlappyBirbContext>(options =>
 {
@@ -10,6 +13,29 @@ builder.Services.AddDbContext<FlappyBirbContext>(options =>
     options.UseLazyLoadingProxies();
 });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<FlappyBirbContext>();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false; // Lors du développement
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudience = "http://localhost:4200", // Client -> HTTP
+        ValidIssuer = "https://localhost:7166", // Serveur -> HTTPS
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes("LooOoonge Phrase SiNoN Ça ne Marchera PaAaAAAAaAs !"))
+    };
+});
+
 
 
 // Add services to the container.
