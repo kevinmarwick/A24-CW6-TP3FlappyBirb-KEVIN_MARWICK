@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Security.Policy;
 
-namespace Flappy_birb.Models
+namespace Flappy_Birb.Models
 {
     public class RegisterDTO
     {
-
         [Required]
         public string Username { get; set; } = null!;
 

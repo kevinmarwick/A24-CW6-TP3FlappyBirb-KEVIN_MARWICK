@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
 
-namespace Flappy_birb.Models
+namespace Flappy_Birb.Models
 {
     public class Score
     {
@@ -13,12 +11,11 @@ namespace Flappy_birb.Models
 
         public decimal Temps { get; set; }
 
-        public DateOnly  Date { get; set; }
+        public DateOnly Date { get; set; }
 
-        public bool EstVisible { get; set; }
-
-        public string Pseudo { get; set; }
+        public bool IsVisible { get; set; }
 
         public virtual User User { get; set; }
+
     }
 }

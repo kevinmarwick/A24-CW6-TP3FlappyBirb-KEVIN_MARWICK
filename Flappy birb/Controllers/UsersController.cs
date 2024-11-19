@@ -1,15 +1,15 @@
-﻿using Flappy_birb.Models;
+﻿using Flappy_Birb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Flappy_birb.Controllers
+namespace Flappy_Birb.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<User> UserManager;
+        readonly UserManager<User> UserManager;
         public UsersController(UserManager<User> userManager)
         {
             this.UserManager = userManager;

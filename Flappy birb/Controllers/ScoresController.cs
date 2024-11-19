@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Flappy_birb.Data;
-using Flappy_birb.Models;
+using Flappy_Birb.Data;
+using Flappy_Birb.Models;
 
-namespace Flappy_birb.Controllers
+namespace Flappy_Birb.Controllers
 {
     public class ScoresController : Controller
     {
@@ -54,7 +54,7 @@ namespace Flappy_birb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Points,Temps,Date,EstVisible,Pseudo")] Score score)
+        public async Task<IActionResult> Create([Bind("Id,Points,Temps,Date,IsVisible")] Score score)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Flappy_birb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Temps,Date,EstVisible,Pseudo")] Score score)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Temps,Date,IsVisible")] Score score)
         {
             if (id != score.Id)
             {

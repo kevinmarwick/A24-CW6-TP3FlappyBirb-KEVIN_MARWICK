@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Flappy_birb.Migrations
+namespace Flappy_Birb.Migrations
 {
     /// <inheritdoc />
-    public partial class MIGRATION_INITIALE : Migration
+    public partial class Gestion_Utilisateurs : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -165,8 +165,7 @@ namespace Flappy_birb.Migrations
                     Points = table.Column<int>(type: "int", nullable: false),
                     Temps = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    EstVisible = table.Column<bool>(type: "bit", nullable: false),
-                    Pseudo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVisible = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>

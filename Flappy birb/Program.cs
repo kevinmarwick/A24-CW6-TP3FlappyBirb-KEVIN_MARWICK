@@ -1,40 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Flappy_birb.Data;
-using Flappy_birb.Models;
+using Flappy_Birb.Data;
+using Flappy_Birb.Models;
 using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<FlappyBirbContext>(options =>
-{
+builder.Services.AddDbContext<FlappyBirbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("FlappyBirbContext") ?? throw new InvalidOperationException("Connection string 'FlappyBirbContext' not found."));
     options.UseLazyLoadingProxies();    
-    });
+});
+builder.Services.AddIdentity<User,IdentityRole>().AddEntityFrameworkStores<FlappyBirbContext>();
+    
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<FlappyBirbContext>();
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();

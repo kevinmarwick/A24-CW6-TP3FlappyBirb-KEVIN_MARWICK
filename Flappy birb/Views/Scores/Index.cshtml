@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Flappy_birb.Models.Score>
+﻿@model IEnumerable<Flappy_Birb.Models.Score>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,10 +22,7 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstVisible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pseudo)
+                @Html.DisplayNameFor(model => model.IsVisible)
             </th>
             <th></th>
         </tr>
@@ -43,10 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EstVisible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pseudo)
+                @Html.DisplayFor(modelItem => item.IsVisible)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

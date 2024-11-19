@@ -1,4 +1,4 @@
-﻿@model Flappy_birb.Models.Score
+﻿@model Flappy_Birb.Models.Score
 
 @{
     ViewData["Title"] = "Details";
@@ -29,16 +29,10 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstVisible)
+            @Html.DisplayNameFor(model => model.IsVisible)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstVisible)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pseudo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pseudo)
+            @Html.DisplayFor(model => model.IsVisible)
         </dd>
     </dl>
 </div>
