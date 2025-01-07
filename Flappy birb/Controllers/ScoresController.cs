@@ -13,7 +13,7 @@ namespace Flappy_Birb.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ScoresController : Controller
+    public class ScoresController : ControllerBase
     {
         private readonly FlappyBirbContext _context;
 
@@ -27,13 +27,14 @@ namespace Flappy_Birb.Controllers
         [Authorize]
         public async Task<IActionResult> PostScore(Score score)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(score);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(score);
+            return Ok(score);
         }
 
         [Authorize]
