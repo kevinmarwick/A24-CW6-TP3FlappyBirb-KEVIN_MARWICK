@@ -52,7 +52,7 @@ namespace Flappy_Birb.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Score");
+                    b.ToTable("Score", (string)null);
                 });
 
             modelBuilder.Entity("Flappy_Birb.Models.User", b =>

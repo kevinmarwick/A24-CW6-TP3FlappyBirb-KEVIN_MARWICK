@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Flappy_Birb.Data;
 using Flappy_Birb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Flappy_Birb.Controllers
 {
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class ScoresController : Controller
     {
         private readonly FlappyBirbContext _context;
@@ -19,42 +22,10 @@ namespace Flappy_Birb.Controllers
             _context = context;
         }
 
-        // GET: Scores
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Score.ToListAsync());
-        }
-
-        // GET: Scores/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var score = await _context.Score
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (score == null)
-            {
-                return NotFound();
-            }
-
-            return View(score);
-        }
-
-        // GET: Scores/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Scores/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Points,Temps,Date,IsVisible")] Score score)
+        [Authorize]
+        public async Task<IActionResult> PostScore(Score score)
         {
             if (ModelState.IsValid)
             {
@@ -65,93 +36,34 @@ namespace Flappy_Birb.Controllers
             return View(score);
         }
 
-        // GET: Scores/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetMyScores(string userId)
+        { 
+            var userScores = await _context.Score.Where(s => s.User.Id == userId).OrderByDescending(s => s.Points).Take(10).ToListAsync();
+            return Ok(userScores);                                                  
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPublicScores()
+        {
+            var top10Scores = await _context.Score.OrderByDescending(s => s.Points).Take(10).ToListAsync();
+            return Ok(top10Scores);
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("{id}")]
+        public async Task<IActionResult> ChangeScoreVisibility(int id)
+        {
             var score = await _context.Score.FindAsync(id);
             if (score == null)
             {
                 return NotFound();
             }
-            return View(score);
-        }
-
-        // POST: Scores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Points,Temps,Date,IsVisible")] Score score)
-        {
-            if (id != score.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(score);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ScoreExists(score.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(score);
-        }
-
-        // GET: Scores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var score = await _context.Score
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (score == null)
-            {
-                return NotFound();
-            }
-
-            return View(score);
-        }
-
-        // POST: Scores/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var score = await _context.Score.FindAsync(id);
-            if (score != null)
-            {
-                _context.Score.Remove(score);
-            }
-
+            score.IsVisible = !score.IsVisible;
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ScoreExists(int id)
-        {
-            return _context.Score.Any(e => e.Id == id);
+            return Ok(score);
         }
     }
 }

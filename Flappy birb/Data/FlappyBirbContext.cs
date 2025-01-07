@@ -15,6 +15,6 @@ namespace Flappy_Birb.Data
         {
         }
 
-        public DbSet<Flappy_Birb.Models.Score> Score { get; set; } = default!;
+        public DbSet<Score> Score { get; set; } = default!;
     }
 }

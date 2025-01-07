@@ -13,7 +13,7 @@ namespace Flappy_Birb.Models
 
         public DateOnly Date { get; set; }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = false;
 
         public virtual User User { get; set; }
 
